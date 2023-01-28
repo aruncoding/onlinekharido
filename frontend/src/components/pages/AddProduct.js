@@ -20,12 +20,24 @@ const AddProduct = () => {
     })
 
     const selectLocation = (e) => {
-        console.log(e);
-        let data = product.location
+      const {value, checked} = e.target
+      let data = product.location
+      if(checked){
         data.push(e.target.defaultValue)
         console.log('data',data)
-        console.log('location',...product.location)
+        console.log('location',...product.location) 
         setProduct({...product,location:data})
+      }
+      if(!checked){
+        let dataindex = data.indexOf(e.target.value)
+         data.splice(dataindex,1)
+        setProduct({...product,location:data})
+      }
+        // let data = product.location
+        // data.push(e.target.defaultValue)
+        // console.log('data',data)
+        // console.log('location',...product.location)
+        // setProduct({...product,location:data})
     }
 
     const getImage = (e) => {
@@ -59,7 +71,7 @@ const AddProduct = () => {
           data.append('category',product.category)
           data.append('location',product.location)
           data.append('image',product.image)
-          if(product.product && product.description && product.category && (product.location).length>0 && product.image){
+          if(product.product && product.description && product.category && (product.location).length>0){
             console.log("form submitted")
             console.log(data.get('product'))
             console.log(data.get('description'))
@@ -67,9 +79,11 @@ const AddProduct = () => {
             console.log(data.get('location'))
             console.log(data.get('image'))
             console.log("form submitted")
+            
             setError({status: true, message: 'Product Added Successfully.....', type: "success"})
+        
           }else{
-            setError({status: true, message: ' All Field Required', type: "error"})
+              setError({status: true, message: ' All Field Required', type: "error"})
           }
       }
 
@@ -106,11 +120,11 @@ const AddProduct = () => {
           <Stack direction="row" alignItems="center" spacing={4} >
             <label htmlFor="profile-photo">
               <Input accept="image/*" id="profile-photo" type="file" onChange={getImage} />
-              <Button variant="contained" component="span">Upload Photo</Button>
+              <Button variant="contained" component="span">Upload Product</Button>
             </label>
           </Stack>
           <Button type="submit" variant="contained" sx={{ mt:3, mb:2, px:5 }} color="error">Submit</Button>
-          {error.status ? <Alert severity={error.type}>{error.message}</Alert> : '' }
+          {error.status ? <Alert severity={error.type}>{error.message}</Alert>  : '' }
         </Box>
       </Grid>
     </Grid>
